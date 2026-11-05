@@ -166,10 +166,10 @@ const store={
   get(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}},
   set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
 };
-let settings=Object.assign({minutes:20,pass:24},store.get("cand_settings",{}));
+let settings=Object.assign({minutes:20,pass:27},store.get("cand_settings_v2",{}));
 let history=store.get("cand_history",[]);
 let wrongSet=new Set(store.get("cand_wrong",[]));
-const saveAll=()=>{store.set("cand_settings",settings);store.set("cand_history",history.slice(0,60));store.set("cand_wrong",[...wrongSet])};
+const saveAll=()=>{store.set("cand_settings_v2",settings);store.set("cand_history",history.slice(0,60));store.set("cand_wrong",[...wrongSet])};
 
 /* ---------- helpers ---------- */
 const $=s=>document.querySelector(s);
@@ -252,7 +252,7 @@ function home(){
     <h2 style="margin-top:22px">Đề cố định (${N_FIXED} đề)</h2>
     <div class="exams">${Array.from({length:N_FIXED},(_,i)=>{const k=i+1,b=bestOf[k];
       return `<button class="ex" data-k="${k}"><b>Đề số ${k}</b><span class="best ${b?(b.correct>=b.pass?"ok":"no"):""}">${b?`Cao nhất: ${b.correct}/${TOTAL}`:"Chưa làm"}</span></button>`}).join("")}</div>`;
-    const rd=()=>{settings.minutes=Math.min(90,Math.max(5,+$("#set-min").value||20));settings.pass=Math.min(TOTAL,Math.max(1,+$("#set-pass").value||24));saveAll()};
+    const rd=()=>{settings.minutes=Math.min(90,Math.max(5,+$("#set-min").value||20));settings.pass=Math.min(TOTAL,Math.max(1,+$("#set-pass").value||27));saveAll()};
     $("#set-min").onchange=rd;$("#set-pass").onchange=rd;
     $("#rand").onclick=()=>{rd();startExam(randomExam(),"Đề ngẫu nhiên",null)};
     tb.querySelectorAll(".ex").forEach(b=>b.onclick=()=>{rd();const k=+b.dataset.k;startExam(fixedExam(k),"Đề số "+k,k)});
